@@ -1,0 +1,9 @@
+{
+  "polaroid_camera_shutter": {
+    "subtitle": "subtitles.polaroid.shutter",
+    "sounds": [
+      "polaroid:polaroid_camera_shutter_1",
+      "polaroid:polaroid_camera_shutter_2"
+    ]
+  }
+}

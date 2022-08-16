@@ -1,0 +1,7 @@
+{
+  "item.polaroid.camera_item" : "Polaroid Camera",
+  "item.polaroid.used_photo_item" : "Used Photo",
+  "item.polaroid.blank_photo_item" : "Blank Photo",
+
+  "subtitle.polaroid.shutter": "Polaroid Camera Shutter"
+}
