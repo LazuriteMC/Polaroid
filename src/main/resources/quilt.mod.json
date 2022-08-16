@@ -19,7 +19,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.lazurite.polaroid.Polaroid"
+			"init": "dev.lazurite.polaroid.Polaroid",
+			"client_init": "dev.lazurite.polaroid.client.PolaroidClient"
 		},
 		"depends": [
 			{

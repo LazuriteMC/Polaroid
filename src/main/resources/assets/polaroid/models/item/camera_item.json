@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0t s": "polaroid:item/camera_item"
+		"0": "polaroid:item/camera_item"
 	},
 	"elements": [
 		{

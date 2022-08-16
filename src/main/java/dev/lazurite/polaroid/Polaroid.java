@@ -19,6 +19,8 @@ import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Random;
+
 public class Polaroid implements ModInitializer {
     public static final String MODID = "polaroid";
     public static final Logger LOGGER = LoggerFactory.getLogger("Polaroid");
@@ -46,8 +48,8 @@ public class Polaroid implements ModInitializer {
             /* Create a photo item with the necessary image bytes, then give to the player. */
             final var photoItem = new ItemStack(USED_PHOTO_ITEM);
             final var tag = photoItem.getOrCreateTag();
-            tag.putByteArray("imageData", bytes);
-            tag.putString("resource", resourceLocation.toString());
+            tag.putInt("id", new Random().nextInt()); // lazy
+            tag.putByteArray("data", bytes);
             player.addItem(photoItem);
 
             /* Play the shutter sound for the player */
