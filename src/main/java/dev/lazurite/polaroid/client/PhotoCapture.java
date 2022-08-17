@@ -7,12 +7,9 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.io.IOException;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface PhotoCapture {
@@ -41,12 +38,8 @@ public interface PhotoCapture {
                 nativeImage.resizeSubRectTo(k, l, i, j, squareImage);
 
                 /* Send the byte information to the server */
-                final var bytes = squareImage.asByteArray();
                 final var buf = new FriendlyByteBuf(Unpooled.buffer());
-                final var uniqueID = Math.abs(new Random().nextInt());
-
-                buf.writeResourceLocation(new ResourceLocation(Polaroid.MODID, "image_" + uniqueID));
-                buf.writeByteArray(bytes);
+                buf.writeByteArray(squareImage.asByteArray());
                 ClientPlayNetworking.send(Polaroid.PHOTO_C2S, buf);
 
             } catch (IOException e) {

@@ -26,8 +26,7 @@ public class Polaroid implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("Polaroid");
 
     public static final CameraItem CAMERA_ITEM = Registry.register(Registry.ITEM, new ResourceLocation(MODID, "camera_item"), new CameraItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-    public static final Item USED_PHOTO_ITEM = Registry.register(Registry.ITEM, new ResourceLocation(MODID, "used_photo_item"), new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-    public static final Item BLANK_PHOTO_ITEM = Registry.register(Registry.ITEM, new ResourceLocation(MODID, "blank_photo_item"), new Item(new Item.Properties().stacksTo(64).tab(CreativeModeTab.TAB_MISC)));
+    public static final Item PHOTO_ITEM = Registry.register(Registry.ITEM, new ResourceLocation(MODID, "used_photo_item"), new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
 
     public static final ResourceLocation PHOTO_C2S = new ResourceLocation(MODID, "photo_c2s");
 
@@ -41,12 +40,11 @@ public class Polaroid implements ModInitializer {
     }
 
     protected void onPhotoReceived(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
-        final var resourceLocation = buf.readResourceLocation();
         final var bytes = buf.readByteArray();
 
         server.execute(() -> {
             /* Create a photo item with the necessary image bytes, then give to the player. */
-            final var photoItem = new ItemStack(USED_PHOTO_ITEM);
+            final var photoItem = new ItemStack(PHOTO_ITEM);
             final var tag = photoItem.getOrCreateTag();
             tag.putInt("id", new Random().nextInt()); // lazy
             tag.putByteArray("data", bytes);
@@ -57,7 +55,7 @@ public class Polaroid implements ModInitializer {
                     null,
                     player.blockPosition(),
                     POLAROID_CAMERA_SHUTTER_EVENT,
-                    SoundSource.PLAYERS,
+                    SoundSource.AMBIENT,
                     1.0f,
                     1.0f
             );
