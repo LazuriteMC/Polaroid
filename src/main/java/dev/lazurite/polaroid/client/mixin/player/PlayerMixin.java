@@ -22,6 +22,6 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "isScoping", at = @At("RETURN"), cancellable = true)
     public void isScoping(CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(info.getReturnValue() || this.getMainHandItem().is(Polaroid.CAMERA_ITEM));
+        info.setReturnValue(info.getReturnValue() || this.getUseItem().is(Polaroid.CAMERA_ITEM));
     }
 }

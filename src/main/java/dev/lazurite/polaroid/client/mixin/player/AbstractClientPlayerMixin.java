@@ -26,7 +26,7 @@ public abstract class AbstractClientPlayerMixin extends Player {
 
     @Inject(method = "getFieldOfViewModifier", at = @At("HEAD"), cancellable = true)
     public void getFieldOfViewModifier(CallbackInfoReturnable<Float> info) {
-        if (this.getMainHandItem().is(Polaroid.CAMERA_ITEM) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+        if (this.getUseItem().is(Polaroid.CAMERA_ITEM) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             info.setReturnValue(0.75f);
         }
     }
