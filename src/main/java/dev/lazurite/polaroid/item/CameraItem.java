@@ -1,6 +1,6 @@
 package dev.lazurite.polaroid.item;
 
-import dev.lazurite.polaroid.client.PhotoCapture;
+import dev.lazurite.polaroid.client.PhotoUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ public class CameraItem extends Item {
         final var itemStack = user.getItemInHand(hand);
 
         if (level.isClientSide()) {
-            PhotoCapture.sendPhoto();
+            PhotoUtil.queuePhotoCapture();
         }
 
         return InteractionResultHolder.success(itemStack);

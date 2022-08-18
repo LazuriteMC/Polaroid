@@ -12,10 +12,22 @@ import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-public interface PhotoCapture {
-    static void sendPhoto() {
+public final class PhotoUtil {
+    private static boolean captureQueued = false;
+
+    public static void queuePhotoCapture() {
+        captureQueued = true;
+    }
+
+    public static boolean isCaptureQueued() {
+        return captureQueued;
+    }
+
+    public static void captureAndSend() {
+        captureQueued = false;
+
         if (!RenderSystem.isOnRenderThread()) {
-            CompletableFuture.runAsync(PhotoCapture::sendPhoto);
+            CompletableFuture.runAsync(PhotoUtil::captureAndSend);
         } else {
             final var nativeImage = Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget());
 

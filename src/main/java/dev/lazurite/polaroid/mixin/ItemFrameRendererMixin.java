@@ -41,7 +41,6 @@ public abstract class ItemFrameRendererMixin {
             if (isBig) {
                 poseStack.translate(-64, -64, -1.0);
             } else {
-                // Shrink the item and draw the background
                 poseStack.translate(-25.6, -28.8, -0.25);
                 poseStack.scale(0.4f, 0.4f, 0.4f);
             }

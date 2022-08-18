@@ -2,8 +2,6 @@ package dev.lazurite.polaroid.client.render;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.lazurite.polaroid.Polaroid;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
