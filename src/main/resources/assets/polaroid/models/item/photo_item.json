@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "polaroid:item/used_photo_item"
+    "layer0": "polaroid:item/photo_item"
   }
 }

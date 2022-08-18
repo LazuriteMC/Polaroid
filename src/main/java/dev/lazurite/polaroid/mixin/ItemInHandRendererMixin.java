@@ -1,6 +1,5 @@
 package dev.lazurite.polaroid.mixin;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import dev.lazurite.polaroid.Polaroid;
@@ -19,9 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
@@ -63,22 +59,10 @@ public abstract class ItemInHandRendererMixin {
             matrices.mulPose(Vector3f.XP.rotationDegrees(h * -45.0F));
             matrices.mulPose(Vector3f.YP.rotationDegrees(f * h * -30.0F));
 
+            // TODO make this better
             matrices.translate(0, 0.05f, 0);
 
-            /* Render the blank item background */
-            PolaroidClient.PHOTO_RENDERER.renderBackground(matrices, vertexConsumers, light);
-
-            if (item.hasTag()) {
-                try {
-                    final var id = item.getTag().getInt("id");
-                    final var data = item.getTag().getByteArray("data");
-                    final var nativeImage = NativeImage.read(new ByteArrayInputStream(data));
-                    PolaroidClient.PHOTO_RENDERER.render(matrices, vertexConsumers, id, nativeImage, light);
-                } catch (IOException e) {
-                    Polaroid.LOGGER.warn("Unable to render polaroid image.", e);
-                }
-            }
-
+            PolaroidClient.PHOTO_RENDERER.render(item, matrices, vertexConsumers, light, false);
             matrices.popPose();
             info.cancel();
         }

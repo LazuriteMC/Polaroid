@@ -13,6 +13,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class PolaroidPhotoRenderer implements AutoCloseable {
     private static final ResourceLocation POLAROID_PHOTO_BACKGROUND = new ResourceLocation(Polaroid.MODID, "textures/item/polaroid_photo_background.png");
@@ -23,7 +27,24 @@ public class PolaroidPhotoRenderer implements AutoCloseable {
         this.textureManager = textureManager;
     }
 
-    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, int id, NativeImage photoData, int light) {
+    public void render(ItemStack item, PoseStack matrices, MultiBufferSource vertexConsumers, int light, boolean isFrame) {
+        /* Render the blank item background */
+        this.renderBackground(matrices, vertexConsumers, light, isFrame);
+
+        if (item.hasTag()) {
+            try {
+                final var id = item.getTag().getInt("id");
+                final var data = item.getTag().getByteArray("data");
+                final var nativeImage = NativeImage.read(new ByteArrayInputStream(data));
+                this.render(matrices, vertexConsumers, id, nativeImage, light);
+            } catch (IOException e) {
+                Polaroid.LOGGER.warn("Unable to render polaroid image.", e);
+            }
+        }
+    }
+
+
+    private void render(PoseStack matrices, MultiBufferSource vertexConsumers, int id, NativeImage photoData, int light) {
         this.getOrCreateMapInstance(id, photoData).draw(matrices, vertexConsumers, light);
     }
 
@@ -37,16 +58,12 @@ public class PolaroidPhotoRenderer implements AutoCloseable {
         });
     }
 
-    public void resetData() {
+    public void close() {
         for(PolaroidPhotoInstance mapInstance : this.photos.values()) {
             mapInstance.close();
         }
 
         this.photos.clear();
-    }
-
-    public void close() {
-        this.resetData();
     }
 
     /**
@@ -55,14 +72,17 @@ public class PolaroidPhotoRenderer implements AutoCloseable {
      * @param vertexConsumers
      * @param light
      */
-    public void renderBackground(PoseStack matrices, MultiBufferSource vertexConsumers, int light) {
-        matrices.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-        matrices.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-        matrices.scale(0.38F, 0.38F, 0.38F);
-        matrices.translate(-0.5, -0.5, 0.0);
-        matrices.scale(0.0078125F, 0.0078125F, 0.0078125F);
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.text(POLAROID_PHOTO_BACKGROUND));
-        Matrix4f matrix4f = matrices.last().pose();
+    private void renderBackground(PoseStack matrices, MultiBufferSource vertexConsumers, int light, boolean isFrame) {
+        if (!isFrame) {
+            matrices.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+            matrices.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            matrices.scale(0.38F, 0.38F, 0.38F);
+            matrices.translate(-0.5, -0.5, 0.0);
+            matrices.scale(0.0078125F, 0.0078125F, 0.0078125F);
+        }
+
+        final var vertexConsumer = vertexConsumers.getBuffer(RenderType.text(POLAROID_PHOTO_BACKGROUND));
+        final var matrix4f = matrices.last().pose();
         vertexConsumer.vertex(matrix4f, -7.0F, 155.0F, 0.0F).color(255, 255, 255, 255).uv(0.0F, 1.0F).uv2(light).endVertex();
         vertexConsumer.vertex(matrix4f, 135.0F, 155.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 1.0F).uv2(light).endVertex();
         vertexConsumer.vertex(matrix4f, 135.0F, -7.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 0.0F).uv2(light).endVertex();
