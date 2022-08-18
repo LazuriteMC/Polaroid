@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.client.mixin;
+package dev.lazurite.polaroid.client.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.lazurite.polaroid.client.util.PhotoUtil;
@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * This mixin uses an injection point just before the user interface is rendered,
+ * making it the ideal target for taking a screenshot for the polaroid image.
+ */
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     @Inject(

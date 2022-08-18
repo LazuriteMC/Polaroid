@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.client.mixin;
+package dev.lazurite.polaroid.client.mixin.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -17,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * This mixin is responsible for rendering a {@link Polaroid#PHOTO_ITEM} on an {@link ItemFrame} entity.
+ */
 @Mixin(ItemFrameRenderer.class)
 public abstract class ItemFrameRendererMixin {
     @Shadow protected abstract <T extends ItemFrame> int getLightVal(T itemFrame, int glowLight, int regularLight);

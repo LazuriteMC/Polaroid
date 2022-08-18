@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.client.mixin;
+package dev.lazurite.polaroid.client.mixin.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -19,6 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * This mixin is responsible for rendering a {@link Polaroid#PHOTO_ITEM} in the player's hand. This is done very similarly to map rendering.
+ */
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
     @Shadow @Final private Minecraft minecraft;
@@ -28,7 +31,7 @@ public abstract class ItemInHandRendererMixin {
     @Inject(
             method = "renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
             at = @At(
-                    value = "INVOKE_ASSIGN",
+                    value = "INVOKE",
                     target = "Lnet/minecraft/client/player/AbstractClientPlayer;isScoping()Z"
             ),
             cancellable = true
