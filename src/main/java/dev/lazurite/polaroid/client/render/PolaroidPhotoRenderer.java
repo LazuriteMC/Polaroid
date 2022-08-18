@@ -27,9 +27,11 @@ public class PolaroidPhotoRenderer implements AutoCloseable {
         this.textureManager = textureManager;
     }
 
-    public void render(ItemStack item, PoseStack matrices, MultiBufferSource vertexConsumers, int light, boolean isFrame) {
-        /* Render the blank item background */
-        this.renderBackground(matrices, vertexConsumers, light, isFrame);
+    public void render(ItemStack item, PoseStack matrices, MultiBufferSource vertexConsumers, int light, boolean isFrame, boolean doBackground) {
+        if (doBackground) {
+            /* Render the blank item background */
+            this.renderBackground(matrices, vertexConsumers, light, isFrame);
+        }
 
         if (item.hasTag()) {
             try {

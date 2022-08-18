@@ -62,7 +62,7 @@ public abstract class ItemInHandRendererMixin {
             // TODO make this better
             matrices.translate(0, 0.05f, 0);
 
-            PolaroidClient.PHOTO_RENDERER.render(item, matrices, vertexConsumers, light, false);
+            PolaroidClient.PHOTO_RENDERER.render(item, matrices, vertexConsumers, light, false, true);
             matrices.popPose();
             info.cancel();
         }
