@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.mixin;
+package dev.lazurite.polaroid.client.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -32,11 +32,13 @@ public abstract class ItemFrameRendererMixin {
     )
     public <T extends ItemFrame> void render(T itemFrame, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo info) {
         if (itemFrame.getItem().is(Polaroid.PHOTO_ITEM)) {
+            final var item = itemFrame.getItem();
+
             poseStack.translate(0.0, 0.0, 0.4375);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
             poseStack.scale(0.0078125F, 0.0078125F, 0.0078125F);
 
-            boolean isBig = itemFrame.getRotation() % 2 != 0;
+            boolean isBig = itemFrame.getRotation() % 2 != 0 && item.hasTag();
 
             if (isBig) {
                 poseStack.translate(-64, -64, -1.0);
@@ -54,7 +56,7 @@ public abstract class ItemFrameRendererMixin {
 
     @Inject(method = "getFrameModelResourceLoc", at = @At("HEAD"), cancellable = true)
     private <T extends ItemFrame> void getFrameModelResourceLoc(T entity, ItemStack stack, CallbackInfoReturnable<ModelResourceLocation> info) {
-        if (stack.is(Polaroid.PHOTO_ITEM) && entity.getRotation() % 2 != 0) {
+        if (stack.is(Polaroid.PHOTO_ITEM) && entity.getRotation() % 2 != 0 && stack.hasTag()) {
             info.setReturnValue(MAP_FRAME_LOCATION);
         }
     }

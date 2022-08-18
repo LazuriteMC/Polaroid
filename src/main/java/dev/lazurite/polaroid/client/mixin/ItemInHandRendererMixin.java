@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.mixin;
+package dev.lazurite.polaroid.client.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;

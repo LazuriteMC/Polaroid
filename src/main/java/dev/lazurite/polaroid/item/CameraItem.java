@@ -1,6 +1,6 @@
 package dev.lazurite.polaroid.item;
 
-import dev.lazurite.polaroid.client.PhotoUtil;
+import dev.lazurite.polaroid.client.util.PhotoUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

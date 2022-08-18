@@ -1,4 +1,4 @@
-package dev.lazurite.polaroid.client;
+package dev.lazurite.polaroid.client.util;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;

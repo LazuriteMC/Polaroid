@@ -1,7 +1,7 @@
-package dev.lazurite.polaroid.mixin;
+package dev.lazurite.polaroid.client.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.lazurite.polaroid.client.PhotoUtil;
+import dev.lazurite.polaroid.client.util.PhotoUtil;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

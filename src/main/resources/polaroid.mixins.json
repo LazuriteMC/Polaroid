@@ -1,14 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.lazurite.polaroid.mixin",
+  "package": "dev.lazurite.polaroid.client.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "GameRendererMixin"
-  ],
   "client": [
     "ItemFrameRendererMixin",
-    "ItemInHandRendererMixin"
+    "ItemInHandRendererMixin",
+    "GameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
