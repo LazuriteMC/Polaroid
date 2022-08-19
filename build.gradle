@@ -37,8 +37,6 @@ java {
 	withSourcesJar()
 }
 
-jar.from("LICENSE").rename { "${it}_${archivesBaseName}" }
-
 publishing {
 	repositories {
 		maven {
