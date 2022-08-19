@@ -44,9 +44,7 @@ public final class PhotoUtil {
                 j = i;
             }
 
-            try (var squareImage = new NativeImage(64, 64, false)) {
-
-                /* Resize the image to 64x64 */
+            try (var squareImage = new NativeImage(128, 128, false)) {
                 nativeImage.resizeSubRectTo(k, l, i, j, squareImage);
 
                 /* Send the byte information to the server */
