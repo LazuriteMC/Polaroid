@@ -39,6 +39,7 @@ public class Polaroid implements ModInitializer {
     @Override
     public void onInitialize(ModContainer mod) {
         LOGGER.info("Say cheese!");
+        Registry.register(Registry.SOUND_EVENT, POLAROID_CAMERA_SHUTTER_ID, POLAROID_CAMERA_SHUTTER_EVENT);
         ServerPlayNetworking.registerGlobalReceiver(PHOTO_C2S, this::onPhotoReceived);
     }
 
