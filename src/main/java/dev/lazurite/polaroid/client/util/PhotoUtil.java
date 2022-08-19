@@ -44,12 +44,13 @@ public final class PhotoUtil {
                 j = i;
             }
 
-            try (var squareImage = new NativeImage(128, 128, false)) {
+            try (var squareImage = new NativeImage(96, 96, false)) {
                 nativeImage.resizeSubRectTo(k, l, i, j, squareImage);
 
                 /* Send the byte information to the server */
                 final var buf = new FriendlyByteBuf(Unpooled.buffer());
                 buf.writeByteArray(squareImage.asByteArray());
+                System.out.println(squareImage.asByteArray().length);
                 ClientPlayNetworking.send(Polaroid.PHOTO_C2S, buf);
 
             } catch (IOException e) {
