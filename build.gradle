@@ -51,7 +51,7 @@ publishing {
 	}
 
 	publications {
-		lattice MavenPublication, {
+		polaroid MavenPublication, {
 			from components.java
 		}
 	}
