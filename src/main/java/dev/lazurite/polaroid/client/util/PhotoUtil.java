@@ -50,7 +50,6 @@ public final class PhotoUtil {
                 /* Send the byte information to the server */
                 final var buf = new FriendlyByteBuf(Unpooled.buffer());
                 buf.writeByteArray(squareImage.asByteArray());
-                System.out.println(squareImage.asByteArray().length);
                 ClientPlayNetworking.send(Polaroid.PHOTO_C2S, buf);
 
             } catch (IOException e) {
