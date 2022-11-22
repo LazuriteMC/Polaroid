@@ -3,6 +3,7 @@ package dev.lazurite.polaroid;
 import dev.lazurite.polaroid.item.CameraItem;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,6 +49,11 @@ public class Polaroid implements ModInitializer {
 
         server.execute(() -> {
             /* Create a photo item with the necessary image bytes, then give to the player. */
+            if (!player.getMainHandItem().is(Polaroid.CAMERA_ITEM)) {
+                player.sendSystemMessage(Component.translatable("polaroid.invalid_item"));
+                return;
+            }
+
             final var photoItem = new ItemStack(PHOTO_ITEM);
             final var tag = photoItem.getOrCreateTag();
             tag.putInt("id", new Random().nextInt()); // lazy
