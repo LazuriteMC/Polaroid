@@ -44,8 +44,10 @@ publishing {
 			url 'https://lazurite.dev/releases'
 
 			credentials {
-				username property('publish.lazurite.alias')
-				password property('publish.lazurite.secret')
+				if (project.hasProperty('publish.lazurite.alias')) {
+					username property('publish.lazurite.alias')
+					password property('publish.lazurite.secret')
+				}
 			}
 		}
 	}

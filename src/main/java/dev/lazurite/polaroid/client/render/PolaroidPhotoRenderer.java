@@ -1,5 +1,6 @@
 package dev.lazurite.polaroid.client.render;
 
+import com.google.common.base.Throwables;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -12,11 +13,12 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class PolaroidPhotoRenderer implements AutoCloseable {
+public class PolaroidPhotoRenderer {
     private static final ResourceLocation POLAROID_PHOTO_BACKGROUND = new ResourceLocation(Polaroid.MODID, "textures/item/polaroid_photo_background.png");
     private final Int2ObjectMap<PolaroidPhotoInstance> photos = new Int2ObjectOpenHashMap<>();
     private final TextureManager textureManager;
@@ -35,31 +37,37 @@ public class PolaroidPhotoRenderer implements AutoCloseable {
             try {
                 final var id = item.getTag().getInt("id");
                 final var data = item.getTag().getByteArray("data");
-                final var nativeImage = NativeImage.read(new ByteArrayInputStream(data));
-                this.render(matrices, vertexConsumers, id, nativeImage, light);
-            } catch (IOException e) {
+                this.render(matrices, vertexConsumers, id, data, light);
+            } catch (Exception e) {
                 Polaroid.LOGGER.warn("Unable to render polaroid image.", e);
             }
         }
     }
 
 
-    private void render(PoseStack matrices, MultiBufferSource vertexConsumers, int id, NativeImage photoData, int light) {
+    private void render(PoseStack matrices, MultiBufferSource vertexConsumers, int id, byte[] photoData, int light) {
         this.getOrCreateMapInstance(id, photoData).draw(matrices, vertexConsumers, light);
     }
 
-    private PolaroidPhotoInstance getOrCreateMapInstance(int id, NativeImage photoData) {
+    private PolaroidPhotoInstance getOrCreateMapInstance(int id, byte[] photoData) {
         return this.photos.compute(id, (idx, instance) -> {
             if (instance == null) {
-                return new PolaroidPhotoInstance(idx, photoData);
+                try {
+                    return new PolaroidPhotoInstance(idx, NativeImage.read(new ByteArrayInputStream(photoData)));
+                } catch (IOException e) {
+                    throw ExceptionUtils.<RuntimeException>rethrow(e);
+                }
             }
 
             return instance;
         });
     }
 
-    public void close() {
-        for(PolaroidPhotoInstance mapInstance : this.photos.values()) {
+    /**
+     * Clear the cached photo instances this photo handler is currently tracking.
+     */
+    public void clear() {
+        for (PolaroidPhotoInstance mapInstance : this.photos.values()) {
             mapInstance.close();
         }
 
